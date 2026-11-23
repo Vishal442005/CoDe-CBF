@@ -18,3 +18,8 @@ manuscript/
 submission_package/
 final submission research 1/
 final submission research 3/
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+test_*.py
+.keep
