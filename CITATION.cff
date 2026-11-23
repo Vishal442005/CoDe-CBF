@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+authors:
+  - family-names: "Chandel"
+    given-names: "Vishal"
+    affiliation: "Autonomous Swarm Systems Laboratory"
+title: "CoDe-CBF: Conformalized Delay-Aware Control Barrier Functions for Decentralized Multi-UAV Swarms"
+version: 1.0.0
+date-released: 2026-11-23
+url: "https://github.com/Vishal442005/CoDe-CBF"
+license: "MIT"
+keywords:
+  - "control-barrier-functions"
+  - "multi-uav-swarms"
+  - "adaptive-conformal-inference"
+  - "age-of-information"
+  - "aerodynamic-downwash"
+  - "ros2-humble"

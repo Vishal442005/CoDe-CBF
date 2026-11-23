@@ -1,0 +1,22 @@
+{
+  "title": "CoDe-CBF: Conformalized Delay-Aware Control Barrier Functions for Decentralized Multi-UAV Swarms",
+  "description": "Complete reproducibility package for CoDe-CBF, providing real 3D sonic anemometer wind datasets, Holybro x500 empirical downwash profiles, live ROS 2 Humble DDS packet traces, 1,000-seed Monte Carlo benchmarks, and the IEEE manuscript.",
+  "creators": [
+    {
+      "name": "Chandel, Vishal",
+      "affiliation": "Autonomous Swarm Systems Laboratory"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "control-barrier-functions",
+    "multi-uav-swarms",
+    "adaptive-conformal-inference",
+    "age-of-information",
+    "aerodynamic-downwash",
+    "ros2-humble",
+    "convex-optimization"
+  ],
+  "upload_type": "software"
+}
