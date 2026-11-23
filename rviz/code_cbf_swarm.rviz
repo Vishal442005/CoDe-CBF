@@ -1,0 +1,40 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Ground Grid
+      Enabled: true
+      Plane: XY
+      Cell Size: 1.0
+      Plane Cell Count: 20
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Drone Bodies
+      Enabled: true
+      Topic:
+        Value: /swarm/markers/drones
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Downwash Anisotropic Barriers
+      Enabled: true
+      Topic:
+        Value: /swarm/markers/downwash_ellipsoids
+    - Class: rviz_default_plugins/MarkerArray
+      Name: 3D Trajectory Trails
+      Enabled: true
+      Topic:
+        Value: /swarm/markers/trajectories
+  Global Options:
+    Fixed Frame: world
+    Frame Rate: 30
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 12.0
+      Focal Point:
+        X: 0.0
+        Y: 0.0
+        Z: 1.5
+      Pitch: 0.55
+      Yaw: 0.78

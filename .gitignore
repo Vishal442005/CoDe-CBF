@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# ROS 2 Build & Log Artifacts
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# LaTeX Build Debris (keep .pdf, .tex, .bib)
+manuscript/*.aux
+manuscript/*.log
+manuscript/*.out
+manuscript/*.toc
+manuscript/*.bbl
+manuscript/*.blg
+manuscript/*.fls
+manuscript/*.fdb_latexmk
+manuscript/*.synctex.gz
+
+# Scratch & Temporary Testing Scripts
+test_*_upgrade.py
+test_fig1_final.py
+
+# System & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
