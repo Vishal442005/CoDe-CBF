@@ -76,9 +76,9 @@ Evaluated across 5 standardized multi-UAV stress scenarios, 4 controllers, and 1
 ## 🚀 Quickstart & Reproduction
 
 ### 1. Single-Command End-to-End Verification
-To run all tests, build the ROS 2 workspace, execute integration checks, and compile the manuscript in one step:
+To run all tests, build the ROS 2 workspace, execute integration checks, and generate all publication figures in one step:
 ```bash
-bash /home/jarvis/Drones_CoDe_CBF/run_all_benchmarks.sh
+bash run_all_benchmarks.sh
 ```
 
 ### 2. Run Standalone Unit Tests
@@ -120,7 +120,6 @@ Drones_CoDe_CBF/
 │   └── processed/           # Benchmark Parquet/CSV evaluation datasets
 ├── docs/                    # Research blueprint, formal proofs, literature catalog
 ├── figures/                 # Vector publication figures (PNG/PDF)
-├── manuscript/              # IEEE RA-L LaTeX paper, BibTeX, Cover Letter, PDF
 ├── ros2_ws/                 # ROS 2 Humble colcon package (code_cbf_ros2)
 ├── rviz/                    # RViz2 3D multi-drone swarm display profile
 ├── src/

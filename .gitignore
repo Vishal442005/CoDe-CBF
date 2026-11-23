@@ -13,16 +13,8 @@ ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
 
-# LaTeX Build Debris (keep .pdf, .tex, .bib)
-manuscript/*.aux
-manuscript/*.log
-manuscript/*.out
-manuscript/*.toc
-manuscript/*.bbl
-manuscript/*.blg
-manuscript/*.fls
-manuscript/*.fdb_latexmk
-manuscript/*.synctex.gz
+# Manuscript & Publication LaTeX (excluded from public repo)
+manuscript/
 
 # Scratch & Temporary Testing Scripts
 test_*_upgrade.py

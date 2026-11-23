@@ -23,11 +23,8 @@ This release contains the complete research artifact and reproducibility package
    - 5 standardized stress scenarios: Canyon Corridor Transit, Inverted Crossing, Rotor Enclosure, 90-Degree Intersection, and Sudden Wind Gust Shocks.
    - Comparative evaluation against Nominal HOCBF, Robust CBF (RaCBF), and Offline Conformal CBF.
 
-5. **Publication Materials:**
-   - IEEE Transactions/Letters format LaTeX source and compiled PDF manuscript (`manuscript/code_cbf_manuscript.pdf`).
-   - 8 high-resolution publication figures (300 DPI, zero overlap).
-   - Pre-submission reviewer rebuttal guide and submission cover letter.
+5. **Publication Materials & Figures:**
+   - 8 high-resolution publication figures (300 DPI, zero overlap) visualizing system architecture, downwash deflection, adaptive conformal margins, Pareto frontier, and multi-UAV trajectories.
 
 6. **Release Assets Attached:**
-   - `CoDe_CBF_Full_Submission_Package.zip`: Complete standalone reproduction package.
-   - `code_cbf_manuscript.pdf`: Complete compiled IEEE manuscript.
+   - `CoDe_CBF_Full_Submission_Package.zip`: Complete standalone research reproduction archive.
