@@ -1,28 +1,20 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-.venv/
-
-# ROS 2 Build & Log Artifacts
-ros2_ws/build/
-ros2_ws/install/
-ros2_ws/log/
-
-# Manuscript & Publication LaTeX (excluded from public repo)
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+*.aux
+*.bbl
+*.blg
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 manuscript/
-
-# Scratch & Temporary Testing Scripts
-test_*_upgrade.py
-test_fig1_final.py
-
-# System & Editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
 submission_package/
+final submission research 1/
+final submission research 3/
