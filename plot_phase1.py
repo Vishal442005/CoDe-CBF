@@ -221,7 +221,7 @@ ax_d.scatter(drop_indices, aoi_ms[drop_indices], color='#c0392b', marker='x', s=
 
 # Annotate the max burst at index 147 (k_global = 897) in clear space
 max_idx = int(np.argmax(aoi_ms))
-burst_txt = r"$\mathbf{Multi-Packet\ Loss\ Burst}$" + "\n" + r"5 Dropped ($\tau_{ij}=5$, AoI = " + f"{aoi_ms[max_idx]:.0f} ms)"
+burst_txt = "Multi-Packet Loss Burst\n" + r"5 Dropped ($\tau_{ij}=5$, AoI = " + f"{aoi_ms[max_idx]:.0f} ms)"
 ax_d.annotate(burst_txt,
               xy=(max_idx, aoi_ms[max_idx]), xytext=(95, 68),
               arrowprops=dict(arrowstyle="->", color='#d35400', lw=2.0),

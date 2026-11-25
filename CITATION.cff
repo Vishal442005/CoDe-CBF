@@ -3,7 +3,8 @@ message: "If you use this work, please cite it as below."
 authors:
   - family-names: "Chandel"
     given-names: "Vishal"
-    affiliation: "Autonomous Swarm Systems Laboratory"
+    affiliation: "Department of Electronics and Communication Engineering, Jawaharlal Nehru Government Engineering College Sundernagar, Mandi, Himachal Pradesh, 175018, India"
+    email: "chandelvishal445@gmail.com"
 title: "CoDe-CBF: Conformalized Delay-Aware Control Barrier Functions for Decentralized Multi-UAV Swarms"
 version: 1.0.0
 date-released: 2026-11-23

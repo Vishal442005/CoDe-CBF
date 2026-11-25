@@ -157,7 +157,7 @@ ax_c.text(0.15, 0.45, r'$\mathbf{COLLISION\ REGION}$' "\n" r'($d_{ij} < r_{\math
 
 # Distinct Minima Markers
 ax_c.plot(1.6, 0.94, marker='*', color='#27ae60', markersize=13, zorder=7, markeredgecolor='black')
-ax_c.annotate(r"$\mathbf{CoDe-CBF\ (Safe)}$" "\n" r"$d_{\min} = 0.94\,\mathrm{m}\ (+17.5\%)$",
+ax_c.annotate("CoDe-CBF (Safe)\n" r"$d_{\min} = 0.94\,\mathrm{m}\ (+17.5\%)$",
               xy=(1.6, 0.94), xytext=(0.40, 1.25),
               arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.8),
               fontsize=9.6, fontweight='bold', color='#1e8449',

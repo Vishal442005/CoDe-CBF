@@ -89,10 +89,10 @@ ax_a.axhline(0.0, color='gray', lw=1.2, ls=':')
 
 # Asymptotic Convergence Badge placed cleanly in bottom-right
 ax_a.text(0.96, 0.15,
-          r"$\mathbf{Provable\ Sub-Linear\ Convergence}$" "\n"
-          r"$\lim_{t \to \infty} \frac{1}{t}\mathcal{R}_t = 0\ \ (\text{Strict Coverage})$",
+          "Provable Sub-Linear Convergence\n"
+          r"$\lim_{t \to \infty} \frac{1}{t}\mathcal{R}_t = 0\ \ (\mathrm{Strict\ Coverage})$",
           transform=ax_a.transAxes, verticalalignment='bottom', horizontalalignment='right',
-          fontsize=9.4, color='#145a32',
+          fontsize=9.4, fontweight='bold', color='#145a32',
           bbox=dict(boxstyle="round,pad=0.28", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
 
 ax_a.set_xlabel("Flight Elapsed Time (s)")
@@ -175,7 +175,7 @@ for (x, y), (dx, dy) in zip(zip(target_coverages, empirical_coverages), offsets)
 ax_c.set_xlabel(r"Target Coverage Budget $1 - \alpha$")
 ax_c.set_ylabel(r"Empirical Swarm Coverage $1 - \bar{e}_T$")
 ax_c.set_xlim(0.87, 1.01)
-ax_c.set_ylim(0.84, 1.03)
+ax_c.set_ylim(0.79, 1.03)
 ax_c.grid(True, linestyle='--', alpha=0.45)
 ax_c.legend(loc='lower right', framealpha=0.95, fontsize=8.8)
 

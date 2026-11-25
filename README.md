@@ -6,7 +6,7 @@
 [![Benchmarks](https://img.shields.io/badge/Benchmarks-1%2C000_Seeds-brightgreen.svg)]()
 
 > **CoDe-CBF:** Distribution-Free Safety Filtering for Decentralized Multi-UAV Swarms under Non-Stationary Aerodynamic Disturbances and Variable Communication Age-of-Information.  
-> **Author:** Vishal Chandel  
+> **Author:** Vishal Chandel (Department of Electronics and Communication Engineering, Jawaharlal Nehru Government Engineering College Sundernagar, Mandi, Himachal Pradesh, 175018, India; `chandelvishal445@gmail.com`)  
 > **Target Venue:** IEEE Robotics and Automation Letters (RA-L) / Elsevier Robotics and Autonomous Systems (RAS)
 
 ---

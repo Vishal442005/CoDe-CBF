@@ -61,7 +61,7 @@ ax_a.annotate(r"$\mathbf{Corridor\ Freezes}$" "\n" r"Excessive volume ($11.45\,\
               fontsize=9.6, fontweight='bold', color='#5b2c6f',
               bbox=dict(boxstyle="round,pad=0.28", fc="#f4ecf7", ec="#8e44ad", lw=1.2, alpha=0.96))
 
-ax_a.annotate(r"$\mathbf{Under-safe}$" "\n" r"$11.35\%$ Canyon ESV",
+ax_a.annotate("Under-safe\n" r"$11.35\%$ Canyon ESV",
               xy=(2.27, 4.29), xytext=(1.75, 2.4),
               arrowprops=dict(arrowstyle="->", color='#c0392b', lw=1.8),
               fontsize=9.6, fontweight='bold', color='#922b21',

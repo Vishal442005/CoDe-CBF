@@ -93,19 +93,22 @@ for idx, (a_id, agent) in enumerate(sim2.agents.items()):
     ax_t1.add_patch(Circle((p_crit[0], p_crit[1]), 0.40, facecolor=col, alpha=0.15, edgecolor=col, ls='--', lw=1.5))
 
 # Central Deconfliction Vortex Callout placed in open lower right quadrant
-ax_t1.annotate(r"$\mathbf{Central\ Vortex}$" "\n" r"$d_{\min} = 0.92\,\mathrm{m} > r_{\mathrm{safe}}$",
-              xy=(0.0, 0.0), xytext=(0.8, -2.0),
+ax_t1.annotate("Central Vortex\n$d_{\\min} = 0.92\\,\\mathrm{m} > r_{\\mathrm{safe}}$",
+              xy=(0.0, 0.0), xytext=(0.6, -2.5),
               arrowprops=dict(arrowstyle="->", color='#2c3e50', lw=1.8),
               fontsize=9.6, fontweight='bold', color='#1a252f',
               bbox=dict(boxstyle="round,pad=0.28", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
 
+all_pts2 = np.vstack([np.array(ag.pos_history)[:, :2] for ag in sim2.agents.values()])
+x2_min, y2_min = all_pts2.min(axis=0) - 0.9
+x2_max, y2_max = all_pts2.max(axis=0) + 0.9
 ax_t1.set_xlabel("Lateral Coordinate $x$ (m)")
 ax_t1.set_ylabel("Longitudinal Coordinate $y$ (m)")
-ax_t1.set_xlim(-3.6, 3.6)
-ax_t1.set_ylim(-3.6, 3.6)
+ax_t1.set_xlim(x2_min, x2_max)
+ax_t1.set_ylim(y2_min, y2_max)
 ax_t1.set_aspect('equal')
 ax_t1.grid(True, linestyle='--', alpha=0.45)
-ax_t1.legend(loc="upper right", framealpha=0.95, fontsize=9.0)
+ax_t1.legend(loc="lower left", framealpha=0.95, fontsize=8.8)
 
 # Scenario 3: Downwash Vertical Stacked Trajectories (Side-view Y-Z)
 cfg3 = ScenarioGenerator.get_scenario(3, seed=15)
@@ -121,30 +124,31 @@ p1_c = np.array(sim3.agents[1].pos_history) # Upper Leader
 p2_c = np.array(sim3.agents[2].pos_history) # Lower Follower (CoDe-CBF)
 p2_n = np.array(sim3_nom.agents[2].pos_history) # Lower Follower (Nominal)
 
-# Shaded downwash slipstream plume cone trailing beneath UAV 1
-y_cross = p1_c[110, 1]
-z_cross1 = p1_c[110, 2]
+# Shaded downwash slipstream plume cone trailing beneath UAV 1 at crossing (step 25)
+k_wake = 25
+y_cross = p1_c[k_wake, 1]
+z_cross1 = p1_c[k_wake, 2]
 wake_cone = np.array([
     [y_cross - 0.25, z_cross1],
     [y_cross + 0.25, z_cross1],
-    [y_cross + 1.20, z_cross1 - 2.0],
-    [y_cross - 0.50, z_cross1 - 2.0]
+    [y_cross + 1.15, z_cross1 - 1.6],
+    [y_cross - 0.45, z_cross1 - 1.6]
 ])
 ax_t2.add_patch(Polygon(wake_cone, facecolor='#e74c3c', alpha=0.18, edgecolor='#c0392b', ls=':', lw=1.5,
                         label=r'Downwash Slipstream Cone ($\mathbf{w}_{\mathrm{down}}$)'))
 
 # Streamline arrows inside cone
 for y_off in [-0.1, 0.1]:
-    ax_t2.annotate('', xy=(y_cross + y_off + 0.6, z_cross1 - 1.8), xytext=(y_cross + y_off, z_cross1 - 0.2),
+    ax_t2.annotate('', xy=(y_cross + y_off + 0.45, z_cross1 - 1.4), xytext=(y_cross + y_off, z_cross1 - 0.15),
                   arrowprops=dict(arrowstyle="-|>", color='#c0392b', lw=1.8, ls='--', mutation_scale=12))
 
 # Plot trajectories
-ax_t2.plot(p1_c[:, 1], p1_c[:, 2], color='#2c3e50', lw=2.8, label=r'UAV 1 Leader ($z \approx 2.2\,\mathrm{m}$)')
+ax_t2.plot(p1_c[:, 1], p1_c[:, 2], color='#2c3e50', lw=2.8, label=r'UAV 1 Leader ($z \geq 2.2\,\mathrm{m}$)')
 ax_t2.plot(p2_c[:, 1], p2_c[:, 2], color='#27ae60', lw=3.0, label=r'UAV 2 Follower: CoDe-CBF (Safe Evasion)')
 ax_t2.plot(p2_n[:, 1], p2_n[:, 2], color='#e74c3c', lw=2.2, ls='--', label=r'UAV 2 Follower: Nominal HOCBF (Wake Penetration)')
 
-# Draw detailed quadrotors at crossing point (step 110)
-draw_drone(ax_t2, p1_c[110, 1], p1_c[110, 2], tilt_deg=-6.0, scale=0.85, body_color='#2c3e50', rotor_color='#e74c3c')
+# Draw detailed quadrotors (Leader at k_wake, Follower at step 110)
+draw_drone(ax_t2, p1_c[k_wake, 1], p1_c[k_wake, 2], tilt_deg=-6.0, scale=0.85, body_color='#2c3e50', rotor_color='#e74c3c')
 draw_drone(ax_t2, p2_c[110, 1], p2_c[110, 2], tilt_deg=4.0, scale=0.85, body_color='#27ae60', rotor_color='#1e8449')
 
 # Start and Goal markers
@@ -153,32 +157,35 @@ for p, col in [(p1_c, '#2c3e50'), (p2_c, '#27ae60'), (p2_n, '#e74c3c')]:
     ax_t2.scatter(p[-1, 1], p[-1, 2], color=col, marker='*', s=160, edgecolor='black', lw=1.4, zorder=6)
 
 # Callout for proactive wake circumvention
-ax_t2.annotate(r"$\mathbf{CoDe-CBF\ Safe\ Dive}$" "\n" r"Clear of wake ($+0.42\,\mathrm{m}$ margin)",
-              xy=(0.0, 1.02), xytext=(-3.6, 0.52),
+ax_t2.annotate("CoDe-CBF Safe Dive\nClear of wake ($+0.42\\,\\mathrm{m}$ margin)",
+              xy=(0.0, 1.02), xytext=(-3.2, 0.45),
               arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.8),
               fontsize=9.4, fontweight='bold', color='#1e8449',
               bbox=dict(boxstyle="round,pad=0.25", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
 
 # Callout for nominal downwash penetration
 min_z_idx = np.argmin(p2_n[:, 2])
-ax_t2.annotate(r"$\mathbf{Nominal\ Wake\ Drop}$" "\n" r"$-4.24\,\mathrm{m/s^2}$ shock $\to$ altitude loss",
-              xy=(p2_n[min_z_idx, 1], p2_n[min_z_idx, 2]), xytext=(0.7, 0.52),
+ax_t2.annotate("Nominal Wake Drop\n$-4.24\\,\\mathrm{m/s^2}$ shock $\\to$ altitude loss",
+              xy=(p2_n[min_z_idx, 1], p2_n[min_z_idx, 2]), xytext=(1.2, 0.45),
               arrowprops=dict(arrowstyle="->", color='#c0392b', lw=1.8),
               fontsize=9.4, fontweight='bold', color='#922b21',
               bbox=dict(boxstyle="round,pad=0.25", fc="#fdedec", ec="#e74c3c", lw=1.2, alpha=0.96))
 
 ax_t2.set_xlabel("Streamwise Travel Direction $y$ (m)")
 ax_t2.set_ylabel("Vertical Altitude $z$ (m)")
-ax_t2.set_xlim(-4.2, 4.2)
-ax_t2.set_ylim(0.2, 3.2)
+ax_t2.set_xlim(-6.2, 4.8)
+ax_t2.set_ylim(0.15, 4.5)
 ax_t2.grid(True, linestyle='--', alpha=0.45)
 ax_t2.legend(loc="upper right", framealpha=0.95, fontsize=9.0)
 
 fig_traj.subplots_adjust(top=0.92, bottom=0.11, left=0.06, right=0.97, wspace=0.22)
-fig4_path = "/home/jarvis/Drones_CoDe_CBF/figures/figure4_multi_uav_trajectory_profiles.png"
-plt.savefig(fig4_path, dpi=300)
+for fig4_path in [
+    "/home/jarvis/Drones_CoDe_CBF/figures/figure4_multi_uav_trajectory_profiles.png",
+    "/home/jarvis/Drones_CoDe_CBF/manuscript/figures/figure4_multi_uav_trajectory_profiles.png",
+]:
+    plt.savefig(fig4_path, dpi=300)
 plt.close(fig_traj)
-print(f"Generated Figure 5: {fig4_path}")
+print(f"Generated Figure 4: {fig4_path}")
 
 # =============================================================================
 # PART 2: Figure 6 (Paper Fig 6): Tier-A 1,000-Seed Benchmark Comparison
@@ -273,13 +280,17 @@ solve_means = [df[df["controller"] == c]["solve_time_ms"].mean() for c in contro
 solve_stds = [df[df["controller"] == c]["solve_time_ms"].std() for c in controllers]
 bars4 = ax_b4.bar(labels, solve_means, yerr=solve_stds, color=colors, alpha=0.88, edgecolor='#1a252f',
                  lw=1.4, hatch=hatches, capsize=6)
-ax_b4.axhline(20.0, color='#8e44ad', linestyle='-', linewidth=2.4, label="Control Tick Deadline (20 ms / 50 Hz)")
 
 ax_b4.set_ylabel("OSQP Solve Latency (ms)")
 ax_b4.set_title(r"$\mathbf{(d)}$ Edge QP Safety Filter Compute Latency (< 0.65 ms)", pad=12)
 ax_b4.grid(True, linestyle='--', alpha=0.45)
-ax_b4.legend(loc="upper right", framealpha=0.95, fontsize=10.0)
 ax_b4.set_ylim(0, 1.45)
+
+# Clean badge showing the 20 ms / 50 Hz deadline (off-scale at 20 ms)
+ax_b4.text(0.97, 0.93, "Control Tick Deadline: 20.0 ms (50 Hz)\n32x Headroom Margin",
+           transform=ax_b4.transAxes, ha='right', va='top',
+           fontsize=9.5, fontweight='bold', color='#5b2c6f',
+           bbox=dict(boxstyle="round,pad=0.3", fc='#f5eef8', ec='#8e44ad', lw=1.3))
 
 for bar in bars4:
     yval = bar.get_height()
@@ -288,15 +299,18 @@ for bar in bars4:
                bbox=dict(boxstyle="round,pad=0.20", fc="#fdfefe", ec="#bdc3c7", lw=1.0, alpha=0.92))
 
 # Real-time capability callout placed cleanly inside axes
-ax_b4.annotate(r"$\mathbf{Sub-Millisecond\ Real-Time}$" "\n" r"32$\times$ faster than 20 ms loop deadline",
-              xy=(0.0, 0.82), xytext=(0.42, 1.15),
+ax_b4.annotate("Sub-Millisecond Real-Time\n32x faster than 20 ms loop deadline",
+              xy=(0.0, 0.82), xytext=(0.45, 1.15),
               ha='center',
               arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.8),
               fontsize=9.6, fontweight='bold', color='#1e8449',
               bbox=dict(boxstyle="round,pad=0.25", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
 
 fig_bm.subplots_adjust(top=0.94, bottom=0.08, left=0.07, right=0.965, hspace=0.36, wspace=0.26)
-fig3_path = "/home/jarvis/Drones_CoDe_CBF/figures/figure3_tier_a_1000_seed_benchmark_comparison.png"
-plt.savefig(fig3_path, dpi=300)
+for fig3_path in [
+    "/home/jarvis/Drones_CoDe_CBF/figures/figure3_tier_a_1000_seed_benchmark_comparison.png",
+    "/home/jarvis/Drones_CoDe_CBF/manuscript/figures/figure3_tier_a_1000_seed_benchmark_comparison.png",
+]:
+    plt.savefig(fig3_path, dpi=300)
 plt.close(fig_bm)
-print(f"Generated Figure 6: {fig3_path}")
+print(f"Generated Figure 3: {fig3_path}")
