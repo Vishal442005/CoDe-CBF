@@ -28,7 +28,7 @@ ax_d = fig.add_subplot(gs[1, 1])
 ax_a.set_title(r"$\mathbf{(a)}$ Pareto Front: Footprint vs Safety", pad=8)
 esv_rates = [0.60, 2.27, 1.08, 0.29]
 volumes = [4.95, 4.29, 11.45, 6.80]
-labels = ['CoDe-CBF (Ours)', 'Nominal HOCBF', 'Robust CBF (RaCBF)', 'Offline Conformal']
+labels = ['CoDe-CBF (Proposed)', 'Nominal HOCBF', 'Robust CBF (RaCBF)', 'Offline Conformal']
 colors = ['#27ae60', '#c0392b', '#8e44ad', '#2980b9']
 markers = ['s', '^', 'v', 'o']
 

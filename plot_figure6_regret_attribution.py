@@ -159,7 +159,7 @@ ax_c.fill_between(x_grid, x_grid, 1.02, color='#27ae60', alpha=0.08, label='Cons
 
 ax_c.plot([0.88, 1.0], [0.88, 1.0], color='#2c3e50', ls='--', lw=2.0, label='Ideal Calibration Line')
 ax_c.plot(target_coverages, empirical_coverages, marker='s', markersize=10, color='#27ae60', lw=2.8,
-          label='CoDe-CBF (Ours)')
+          label='CoDe-CBF (Proposed)')
 ax_c.scatter(target_coverages, nominal_cov, marker='^', color='#c0392b', s=110, zorder=6,
              label='Nominal HOCBF (Under-safe)')
 ax_c.scatter(target_coverages, racbf_cov, marker='v', color='#8e44ad', s=110, zorder=6,

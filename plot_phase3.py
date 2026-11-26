@@ -13,13 +13,12 @@ from src.simulation.data_loader import RealAerodynamicDataLoader
 
 plt.rcParams.update({
     'font.family': 'sans-serif',
-    'font.size': 12.0,
-    'axes.labelsize': 13.5,
-    'axes.titlesize': 14.8,
-    'xtick.labelsize': 11.2,
-    'ytick.labelsize': 11.2,
-    'legend.fontsize': 9.8,
-    'figure.titlesize': 17.5,
+    'font.size': 11.5,
+    'axes.labelsize': 12.6,
+    'axes.titlesize': 13.2,
+    'xtick.labelsize': 10.8,
+    'ytick.labelsize': 10.8,
+    'legend.fontsize': 8.8,
     'mathtext.fontset': 'dejavusans'
 })
 
@@ -50,8 +49,8 @@ def draw_drone(ax, x, y, tilt_deg=0.0, scale=1.0, body_color='#2c3e50', arm_colo
 # =============================================================================
 # PART 1: Figure 5 (Paper Fig 5): Multi-UAV Trajectory Profiles
 # =============================================================================
-fig_traj = plt.figure(figsize=(17.2, 7.8), dpi=300)
-gs_traj = gridspec.GridSpec(1, 2, width_ratios=[1.0, 1.15], wspace=0.25)
+fig_traj = plt.figure(figsize=(11.4, 5.0), dpi=300)
+gs_traj = gridspec.GridSpec(1, 2, width_ratios=[1.0, 1.12], wspace=0.25)
 
 ax_t1 = fig_traj.add_subplot(gs_traj[0, 0])
 ax_t2 = fig_traj.add_subplot(gs_traj[0, 1])
@@ -61,11 +60,11 @@ cfg2 = ScenarioGenerator.get_scenario(2, seed=10)
 sim2 = MultiUAVSwarmSimulator(cfg2, controller_type="code_cbf", data_loader=loader)
 sim2.run_simulation(max_steps=280)
 
-ax_t1.set_title(r"$\mathbf{(a)}$ 4-UAV Antipodal Circle Swap (CoDe-CBF Vortex Avoidance)", pad=12)
+ax_t1.set_title(r"$\mathbf{(a)}$ 4-UAV Circle Swap (Vortex Avoidance)", pad=9)
 
 uav_colors = ['#1f77b4', '#27ae60', '#e67e22', '#8e44ad']
-uav_labels = [r'UAV 1 (East $\rightarrow$ West)', r'UAV 2 (North $\rightarrow$ South)',
-              r'UAV 3 (West $\rightarrow$ East)', r'UAV 4 (South $\rightarrow$ North)']
+uav_labels = [r'UAV 1 (E$\to$W)', r'UAV 2 (N$\to$S)',
+              r'UAV 3 (W$\to$E)', r'UAV 4 (S$\to$N)']
 
 for idx, (a_id, agent) in enumerate(sim2.agents.items()):
     pos = np.array(agent.pos_history)
@@ -118,13 +117,12 @@ sim3.run_simulation(max_steps=280)
 sim3_nom = MultiUAVSwarmSimulator(cfg3, controller_type="nominal_hocbf", data_loader=loader)
 sim3_nom.run_simulation(max_steps=280)
 
-ax_t2.set_title(r"$\mathbf{(b)}$ Vertical Stacked Flight with Rotor Downwash Wake Evasion", pad=12)
+ax_t2.set_title(r"$\mathbf{(b)}$ Stacked Flight & Wake Evasion", pad=9)
 
-p1_c = np.array(sim3.agents[1].pos_history) # Upper Leader
-p2_c = np.array(sim3.agents[2].pos_history) # Lower Follower (CoDe-CBF)
-p2_n = np.array(sim3_nom.agents[2].pos_history) # Lower Follower (Nominal)
+p1_c = np.array(sim3.agents[1].pos_history)
+p2_c = np.array(sim3.agents[2].pos_history)
+p2_n = np.array(sim3_nom.agents[2].pos_history)
 
-# Shaded downwash slipstream plume cone trailing beneath UAV 1 at crossing (step 25)
 k_wake = 25
 y_cross = p1_c[k_wake, 1]
 z_cross1 = p1_c[k_wake, 2]
@@ -135,50 +133,44 @@ wake_cone = np.array([
     [y_cross - 0.45, z_cross1 - 1.6]
 ])
 ax_t2.add_patch(Polygon(wake_cone, facecolor='#e74c3c', alpha=0.18, edgecolor='#c0392b', ls=':', lw=1.5,
-                        label=r'Downwash Slipstream Cone ($\mathbf{w}_{\mathrm{down}}$)'))
+                        label=r'Wake Cone ($\mathbf{w}_{\mathrm{down}}$)'))
 
-# Streamline arrows inside cone
 for y_off in [-0.1, 0.1]:
     ax_t2.annotate('', xy=(y_cross + y_off + 0.45, z_cross1 - 1.4), xytext=(y_cross + y_off, z_cross1 - 0.15),
                   arrowprops=dict(arrowstyle="-|>", color='#c0392b', lw=1.8, ls='--', mutation_scale=12))
 
-# Plot trajectories
-ax_t2.plot(p1_c[:, 1], p1_c[:, 2], color='#2c3e50', lw=2.8, label=r'UAV 1 Leader ($z \geq 2.2\,\mathrm{m}$)')
-ax_t2.plot(p2_c[:, 1], p2_c[:, 2], color='#27ae60', lw=3.0, label=r'UAV 2 Follower: CoDe-CBF (Safe Evasion)')
-ax_t2.plot(p2_n[:, 1], p2_n[:, 2], color='#e74c3c', lw=2.2, ls='--', label=r'UAV 2 Follower: Nominal HOCBF (Wake Penetration)')
+ax_t2.plot(p1_c[:, 1], p1_c[:, 2], color='#2c3e50', lw=2.6, label=r'UAV 1 Leader')
+ax_t2.plot(p2_c[:, 1], p2_c[:, 2], color='#27ae60', lw=2.8, label=r'UAV 2: CoDe-CBF (Safe)')
+ax_t2.plot(p2_n[:, 1], p2_n[:, 2], color='#e74c3c', lw=2.1, ls='--', label=r'UAV 2: Nominal (Drop)')
 
-# Draw detailed quadrotors (Leader at k_wake, Follower at step 110)
 draw_drone(ax_t2, p1_c[k_wake, 1], p1_c[k_wake, 2], tilt_deg=-6.0, scale=0.85, body_color='#2c3e50', rotor_color='#e74c3c')
 draw_drone(ax_t2, p2_c[110, 1], p2_c[110, 2], tilt_deg=4.0, scale=0.85, body_color='#27ae60', rotor_color='#1e8449')
 
-# Start and Goal markers
 for p, col in [(p1_c, '#2c3e50'), (p2_c, '#27ae60'), (p2_n, '#e74c3c')]:
-    ax_t2.scatter(p[0, 1], p[0, 2], color=col, marker='o', s=100, edgecolor='black', lw=1.4, zorder=6)
-    ax_t2.scatter(p[-1, 1], p[-1, 2], color=col, marker='*', s=160, edgecolor='black', lw=1.4, zorder=6)
+    ax_t2.scatter(p[0, 1], p[0, 2], color=col, marker='o', s=90, edgecolor='black', lw=1.3, zorder=6)
+    ax_t2.scatter(p[-1, 1], p[-1, 2], color=col, marker='*', s=140, edgecolor='black', lw=1.3, zorder=6)
 
-# Callout for proactive wake circumvention
-ax_t2.annotate("CoDe-CBF Safe Dive\nClear of wake ($+0.42\\,\\mathrm{m}$ margin)",
-              xy=(0.0, 1.02), xytext=(-3.2, 0.45),
-              arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.8),
-              fontsize=9.4, fontweight='bold', color='#1e8449',
-              bbox=dict(boxstyle="round,pad=0.25", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
+ax_t2.annotate("CoDe-CBF Dive\n($+0.42$ m Clear)",
+              xy=(0.0, 1.02), xytext=(-3.6, 0.40),
+              arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.7),
+              fontsize=9.2, fontweight='bold', color='#1e8449',
+              bbox=dict(boxstyle="round,pad=0.22", fc="#eafaf1", ec="#27ae60", lw=1.1, alpha=0.96))
 
-# Callout for nominal downwash penetration
 min_z_idx = np.argmin(p2_n[:, 2])
-ax_t2.annotate("Nominal Wake Drop\n$-4.24\\,\\mathrm{m/s^2}$ shock $\\to$ altitude loss",
-              xy=(p2_n[min_z_idx, 1], p2_n[min_z_idx, 2]), xytext=(1.2, 0.45),
-              arrowprops=dict(arrowstyle="->", color='#c0392b', lw=1.8),
-              fontsize=9.4, fontweight='bold', color='#922b21',
-              bbox=dict(boxstyle="round,pad=0.25", fc="#fdedec", ec="#e74c3c", lw=1.2, alpha=0.96))
+ax_t2.annotate("Nominal Drop\n$-4.24\\,\\mathrm{m/s^2}$ Shock",
+              xy=(p2_n[min_z_idx, 1], p2_n[min_z_idx, 2]), xytext=(0.8, 0.40),
+              arrowprops=dict(arrowstyle="->", color='#c0392b', lw=1.7),
+              fontsize=9.2, fontweight='bold', color='#922b21',
+              bbox=dict(boxstyle="round,pad=0.22", fc="#fdedec", ec="#e74c3c", lw=1.1, alpha=0.96))
 
-ax_t2.set_xlabel("Streamwise Travel Direction $y$ (m)")
-ax_t2.set_ylabel("Vertical Altitude $z$ (m)")
+ax_t2.set_xlabel("Streamwise Direction $y$ (m)")
+ax_t2.set_ylabel("Altitude $z$ (m)")
 ax_t2.set_xlim(-6.2, 4.8)
-ax_t2.set_ylim(0.15, 4.5)
+ax_t2.set_ylim(0.10, 4.6)
 ax_t2.grid(True, linestyle='--', alpha=0.45)
-ax_t2.legend(loc="upper right", framealpha=0.95, fontsize=9.0)
+ax_t2.legend(loc="upper right", framealpha=0.95, fontsize=8.8)
 
-fig_traj.subplots_adjust(top=0.92, bottom=0.11, left=0.06, right=0.97, wspace=0.22)
+fig_traj.subplots_adjust(top=0.90, bottom=0.13, left=0.07, right=0.98, wspace=0.24)
 for fig4_path in [
     "/home/jarvis/Drones_CoDe_CBF/figures/figure4_multi_uav_trajectory_profiles.png",
     "/home/jarvis/Drones_CoDe_CBF/manuscript/figures/figure4_multi_uav_trajectory_profiles.png",
@@ -190,8 +182,8 @@ print(f"Generated Figure 4: {fig4_path}")
 # =============================================================================
 # PART 2: Figure 6 (Paper Fig 6): Tier-A 1,000-Seed Benchmark Comparison
 # =============================================================================
-fig_bm = plt.figure(figsize=(17.2, 11.5), dpi=300)
-gs_bm = gridspec.GridSpec(2, 2, height_ratios=[1.0, 1.0], hspace=0.36, wspace=0.26)
+fig_bm = plt.figure(figsize=(11.2, 7.2), dpi=300)
+gs_bm = gridspec.GridSpec(2, 2, height_ratios=[1.0, 1.0], hspace=0.40, wspace=0.28)
 
 ax_b1 = fig_bm.add_subplot(gs_bm[0, 0])
 ax_b2 = fig_bm.add_subplot(gs_bm[0, 1])
@@ -199,114 +191,106 @@ ax_b3 = fig_bm.add_subplot(gs_bm[1, 0])
 ax_b4 = fig_bm.add_subplot(gs_bm[1, 1])
 
 controllers = ["code_cbf", "offline_conformal", "racbf", "nominal_hocbf"]
-labels = ["CoDe-CBF\n(Ours)", "Offline\nConformal", "Robust CBF\n(RaCBF)", "Nominal\nHOCBF"]
+labels = ["CoDe-CBF\n(Proposed)", "Offline\nConf.", "RaCBF", "Nominal\nHOCBF"]
 colors = ["#27ae60", "#2980b9", "#8e44ad", "#c0392b"]
 hatches = ['', '//', '\\\\', 'xx']
 
-# 1. Empirical Safety Violation in Scenario 4 (Canyon)
 sc4_df = df[df["scenario_id"] == 4]
 esv_means = [sc4_df[sc4_df["controller"] == c]["safety_violation_rate"].mean() * 100 for c in controllers]
+bars1 = ax_b1.bar(labels, esv_means, color=colors, alpha=0.88, edgecolor='#1a252f', lw=1.3, hatch=hatches)
+ax_b1.axhline(5.0, color='#c0392b', linestyle='--', linewidth=2.2, label=r"Risk Budget ($\alpha=5\%$)")
 
-bars1 = ax_b1.bar(labels, esv_means, color=colors, alpha=0.88, edgecolor='#1a252f', lw=1.4, hatch=hatches)
-ax_b1.axhline(5.0, color='#c0392b', linestyle='--', linewidth=2.4, label=r"Safety Risk Budget Target ($\alpha = 5\%$)")
-
-# Overlay seed distribution points (jitter)
 for idx, c in enumerate(controllers):
     pts = sc4_df[sc4_df["controller"] == c]["safety_violation_rate"] * 100
     jitter = np.random.RandomState(42).normal(0, 0.05, size=len(pts))
-    ax_b1.scatter(idx + jitter, pts, color=colors[idx], alpha=0.18, s=20, zorder=4)
+    ax_b1.scatter(idx + jitter, pts, color=colors[idx], alpha=0.18, s=16, zorder=4)
 
-ax_b1.set_ylabel("Safety Violation Rate (%)")
-ax_b1.set_title(r"$\mathbf{(a)}$ Safety Violation Rate in Canyon Corridor (Scenario 4)", pad=12)
+ax_b1.set_ylabel("Violation Rate (%)")
+ax_b1.set_title(r"$\mathbf{(a)}$ Canyon Violation Rate (Scen. 4)", pad=8)
 ax_b1.grid(True, linestyle='--', alpha=0.45)
-ax_b1.legend(loc="upper right", framealpha=0.95, fontsize=10.0)
+ax_b1.legend(loc="upper left", framealpha=0.95, fontsize=8.8)
 ax_b1.set_ylim(0, 15.2)
 
 for bar in bars1:
     yval = bar.get_height()
-    ax_b1.text(bar.get_x() + bar.get_width()/2.0, yval + 0.45, f"{yval:.2f}%", ha='center', va='bottom',
-               fontweight='bold', fontsize=11.2,
-               bbox=dict(boxstyle="round,pad=0.20", fc="#fdfefe", ec="#bdc3c7", lw=1.0, alpha=0.92))
+    ax_b1.text(bar.get_x() + bar.get_width()/2.0, yval + 0.42, f"{yval:.2f}%", ha='center', va='bottom',
+               fontweight='bold', fontsize=9.8,
+               bbox=dict(boxstyle="round,pad=0.16", fc="#fdfefe", ec="#bdc3c7", lw=0.9, alpha=0.92))
 
-# Callout for CoDe-CBF compliance positioned cleanly
-ax_b1.annotate(r"$\mathbf{Strictly\ Compliant}$" "\n" r"($3.01\% < \alpha_{\mathrm{target}}$)",
-              xy=(0.32, 1.8), xytext=(0.48, 6.2),
-              arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.8),
-              fontsize=9.6, fontweight='bold', color='#1e8449',
-              bbox=dict(boxstyle="round,pad=0.25", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
+ax_b1.annotate("Compliant\n($3.01\\% < 5\\%$)",
+              xy=(0.25, 2.0), xytext=(0.68, 7.6),
+              arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.7),
+              fontsize=9.0, fontweight='bold', color='#1e8449',
+              bbox=dict(boxstyle="round,pad=0.22", fc="#eafaf1", ec="#27ae60", lw=1.1, alpha=0.96))
 
-# 2. Overall Mean Safety Violation Across All 1,000 Runs
 all_esv_means = [df[df["controller"] == c]["safety_violation_rate"].mean() * 100 for c in controllers]
-bars2 = ax_b2.bar(labels, all_esv_means, color=colors, alpha=0.88, edgecolor='#1a252f', lw=1.4, hatch=hatches)
-ax_b2.axhline(5.0, color='#c0392b', linestyle='--', linewidth=2.4, label=r"Safety Risk Budget Target ($\alpha = 5\%$)")
+bars2 = ax_b2.bar(labels, all_esv_means, color=colors, alpha=0.88, edgecolor='#1a252f', lw=1.3, hatch=hatches)
+ax_b2.axhline(5.0, color='#c0392b', linestyle='--', linewidth=2.2, label=r"Risk Budget ($\alpha=5\%$)")
 
-ax_b2.set_ylabel("Mean Swarm Violation Rate (%)")
-ax_b2.set_title(r"$\mathbf{(b)}$ Overall Swarm Safety Violation Rate (All 1,000 Seeds)", pad=12)
+ax_b2.set_ylabel("Mean Violation Rate (%)")
+ax_b2.set_title(r"$\mathbf{(b)}$ Overall Swarm Violation (1,000 Seeds)", pad=8)
 ax_b2.grid(True, linestyle='--', alpha=0.45)
-ax_b2.legend(loc="upper right", framealpha=0.95, fontsize=10.0)
+ax_b2.legend(loc="upper left", framealpha=0.95, fontsize=8.8)
 ax_b2.set_ylim(0, 7.2)
 
 for bar in bars2:
     yval = bar.get_height()
-    ax_b2.text(bar.get_x() + bar.get_width()/2.0, yval + 0.22, f"{yval:.2f}%", ha='center', va='bottom',
-               fontweight='bold', fontsize=11.2,
-               bbox=dict(boxstyle="round,pad=0.20", fc="#fdfefe", ec="#bdc3c7", lw=1.0, alpha=0.92))
+    ax_b2.text(bar.get_x() + bar.get_width()/2.0, yval + 0.20, f"{yval:.2f}%", ha='center', va='bottom',
+               fontweight='bold', fontsize=9.8,
+               bbox=dict(boxstyle="round,pad=0.16", fc="#fdfefe", ec="#bdc3c7", lw=0.9, alpha=0.92))
 
-# 3. Inter-UAV Separation Distance by Scenario with expanded ylim (0, 6.2)
 sc_indices = np.arange(1, 6)
 bar_width = 0.19
-sc_labels = ["1: Head-On", "2: Swap", "3: Downwash", "4: Canyon", "5: Swarm"]
+sc_labels = ["1:Head", "2:Swap", "3:Wake", "4:Canyon", "5:Swarm"]
+leg_short = ["CoDe-CBF", "Offline", "RaCBF", "Nominal"]
 
-for i, (c, col, lbl, ht) in enumerate(zip(controllers, colors, labels, hatches)):
+for i, (c, col, lbl_s, ht) in enumerate(zip(controllers, colors, leg_short, hatches)):
     c_df = df[df["controller"] == c]
     d_means = [c_df[c_df["scenario_id"] == sc]["min_distance_m"].mean() for sc in sc_indices]
     ax_b3.bar(sc_indices + (i - 1.5)*bar_width, d_means, width=bar_width, color=col, alpha=0.88,
-              edgecolor='#1a252f', lw=1.2, hatch=ht, label=lbl.replace('\n', ' '))
+              edgecolor='#1a252f', lw=1.1, hatch=ht, label=lbl_s)
 
-ax_b3.axhline(0.8, color='#c0392b', linestyle='--', linewidth=2.4, label=r"Safe Boundary ($r_{\mathrm{safe}} = 0.8\,\mathrm{m}$)")
+ax_b3.axhline(0.8, color='#c0392b', linestyle='--', linewidth=2.2, label=r"Safe ($0.8$ m)")
 ax_b3.fill_between([0.4, 5.6], 0.0, 0.8, color='#e74c3c', alpha=0.12)
 ax_b3.set_xlabel("Operational Stress Scenario")
-ax_b3.set_ylabel("Mean Minimum Separation $d_{\min}$ (m)")
-ax_b3.set_title(r"$\mathbf{(c)}$ Pairwise Separation Distance by Stress Scenario", pad=12)
+ax_b3.set_ylabel(r"Min Separation $d_{\min}$ (m)")
+ax_b3.set_title(r"$\mathbf{(c)}$ Pairwise Separation by Scenario", pad=8)
 ax_b3.set_xticks(sc_indices)
 ax_b3.set_xticklabels(sc_labels)
 ax_b3.set_xlim(0.4, 5.6)
-ax_b3.set_ylim(0, 6.2)
+ax_b3.set_ylim(0, 6.4)
 ax_b3.grid(True, linestyle='--', alpha=0.45)
-ax_b3.legend(loc="upper right", framealpha=0.95, fontsize=9.2, ncol=2)
+ax_b3.legend(loc="upper right", framealpha=0.95, fontsize=8.4, ncol=2, columnspacing=0.8)
 
-# 4. OSQP Solve Latency Breakdown with clean vertical callout
 solve_means = [df[df["controller"] == c]["solve_time_ms"].mean() for c in controllers]
 solve_stds = [df[df["controller"] == c]["solve_time_ms"].std() for c in controllers]
 bars4 = ax_b4.bar(labels, solve_means, yerr=solve_stds, color=colors, alpha=0.88, edgecolor='#1a252f',
-                 lw=1.4, hatch=hatches, capsize=6)
+                 lw=1.3, hatch=hatches, capsize=5)
 
-ax_b4.set_ylabel("OSQP Solve Latency (ms)")
-ax_b4.set_title(r"$\mathbf{(d)}$ Edge QP Safety Filter Compute Latency (< 0.65 ms)", pad=12)
+ax_b4.set_ylabel("Solve Latency (ms)")
+ax_b4.set_title(r"$\mathbf{(d)}$ Edge QP Compute Latency (< 0.65 ms)", pad=8)
 ax_b4.grid(True, linestyle='--', alpha=0.45)
-ax_b4.set_ylim(0, 1.45)
+ax_b4.set_ylim(0, 1.48)
 
-# Clean badge showing the 20 ms / 50 Hz deadline (off-scale at 20 ms)
-ax_b4.text(0.97, 0.93, "Control Tick Deadline: 20.0 ms (50 Hz)\n32x Headroom Margin",
+ax_b4.text(0.97, 0.94, "Tick Budget: 20 ms (50 Hz)\n32x Headroom",
            transform=ax_b4.transAxes, ha='right', va='top',
-           fontsize=9.5, fontweight='bold', color='#5b2c6f',
-           bbox=dict(boxstyle="round,pad=0.3", fc='#f5eef8', ec='#8e44ad', lw=1.3))
+           fontsize=8.8, fontweight='bold', color='#5b2c6f',
+           bbox=dict(boxstyle="round,pad=0.22", fc='#f5eef8', ec='#8e44ad', lw=1.1))
 
 for bar in bars4:
     yval = bar.get_height()
-    ax_b4.text(bar.get_x() + bar.get_width()/2.0, yval + 0.08, f"{yval:.3f} ms", ha='center', va='bottom',
-               fontweight='bold', fontsize=11.2,
-               bbox=dict(boxstyle="round,pad=0.20", fc="#fdfefe", ec="#bdc3c7", lw=1.0, alpha=0.92))
+    ax_b4.text(bar.get_x() + bar.get_width()/2.0, yval + 0.08, f"{yval:.3f}", ha='center', va='bottom',
+               fontweight='bold', fontsize=9.6,
+               bbox=dict(boxstyle="round,pad=0.16", fc="#fdfefe", ec="#bdc3c7", lw=0.9, alpha=0.92))
 
-# Real-time capability callout placed cleanly inside axes
-ax_b4.annotate("Sub-Millisecond Real-Time\n32x faster than 20 ms loop deadline",
-              xy=(0.0, 0.82), xytext=(0.45, 1.15),
+ax_b4.annotate("Sub-ms Real-Time\n(32x Faster)",
+              xy=(0.0, 0.80), xytext=(0.45, 1.15),
               ha='center',
-              arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.8),
-              fontsize=9.6, fontweight='bold', color='#1e8449',
-              bbox=dict(boxstyle="round,pad=0.25", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
+              arrowprops=dict(arrowstyle="->", color='#27ae60', lw=1.7),
+              fontsize=9.0, fontweight='bold', color='#1e8449',
+              bbox=dict(boxstyle="round,pad=0.22", fc="#eafaf1", ec="#27ae60", lw=1.1, alpha=0.96))
 
-fig_bm.subplots_adjust(top=0.94, bottom=0.08, left=0.07, right=0.965, hspace=0.36, wspace=0.26)
+fig_bm.subplots_adjust(top=0.93, bottom=0.09, left=0.08, right=0.98, hspace=0.40, wspace=0.28)
 for fig3_path in [
     "/home/jarvis/Drones_CoDe_CBF/figures/figure3_tier_a_1000_seed_benchmark_comparison.png",
     "/home/jarvis/Drones_CoDe_CBF/manuscript/figures/figure3_tier_a_1000_seed_benchmark_comparison.png",
