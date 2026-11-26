@@ -18,9 +18,9 @@ from code_cbf.adaptive_conformal import AdaptiveConformalTracker
 
 plt.rcParams.update({
     'font.family': 'sans-serif',
-    'font.size': 12.0,
+    'font.size': 12.2,
     'axes.labelsize': 13.5,
-    'axes.titlesize': 14.8,
+    'axes.titlesize': 14.5,
     'xtick.labelsize': 11.2,
     'ytick.labelsize': 11.2,
     'legend.fontsize': 9.6,
@@ -60,7 +60,7 @@ for step in range(T_steps):
 # -----------------------------------------------------------------------------
 # Create 3-Panel Figure
 # -----------------------------------------------------------------------------
-fig = plt.figure(figsize=(17.5, 6.2), dpi=300)
+fig = plt.figure(figsize=(15.5, 5.2), dpi=300)
 gs = gridspec.GridSpec(1, 3, width_ratios=[1.15, 1.35, 1.05], wspace=0.28)
 
 ax_a = fig.add_subplot(gs[0, 0])
@@ -70,7 +70,7 @@ ax_c = fig.add_subplot(gs[0, 2])
 # -----------------------------------------------------------------------------
 # Panel (a): Finite-Horizon Regret Convergence
 # -----------------------------------------------------------------------------
-ax_a.set_title(r"$\mathbf{(a)}$ Finite-Horizon Regret $\mathcal{R}_t$ (Theorem 3)", pad=12)
+ax_a.set_title(r"$\mathbf{(a)}$ Finite-Horizon Regret $\mathcal{R}_t$ (Theorem 2)", pad=12)
 regret_95 = np.array(tracker_95.regret_history)[1:]
 steps_arr = np.arange(1, T_steps + 1)
 avg_regret = regret_95 / steps_arr
@@ -96,7 +96,7 @@ ax_a.text(0.96, 0.15,
           bbox=dict(boxstyle="round,pad=0.28", fc="#eafaf1", ec="#27ae60", lw=1.2, alpha=0.96))
 
 ax_a.set_xlabel("Flight Elapsed Time (s)")
-ax_a.set_ylabel(r"Time-Averaged Regret $\frac{1}{t}\sum_{k=1}^t (e_k - \alpha)$")
+ax_a.set_ylabel(r"Avg. Regret $\frac{1}{t}\sum_{k=1}^t (e_k - \alpha)$", fontsize=12.4)
 ax_a.set_ylim(-0.16, 0.28)
 ax_a.set_xlim(0, 12.0)
 ax_a.grid(True, linestyle='--', alpha=0.45)
